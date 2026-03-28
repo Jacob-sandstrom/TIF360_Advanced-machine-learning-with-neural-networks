@@ -129,12 +129,13 @@ for iteration in range(max_iterations):
     y_true = y_data[rand_data_indecies]
     y_pred = [single_neuron(x, w, b) for x in x_vals]
     
-    err_vals = error(y_true, y_pred)
+    # err_vals = error(y_true, y_pred)
+    err_vals = [error(y_true[i], y_pred[i]) for i in range(batch_size)]
     errors.append(np.mean(err_vals))
 
     # w, b = update_parameters(w, b, x_vals, y_true, y_pred, learning_rate)
-    dw_vals = [derivative_weight(x, w, b, y_true, y_pred) for x in x_vals]
-    db_vals = [derivative_bias(x, w, b, y_true, y_pred) for x in x_vals]
+    dw_vals = [derivative_weight(x_vals[i], w, b, y_true[i], y_pred[i]) for i in range(batch_size)]
+    db_vals = [derivative_bias(x_vals[i], w, b, y_true[i], y_pred[i]) for i in range(batch_size)]
     w -= learning_rate * np.mean(dw_vals)
     b -= learning_rate * np.mean(db_vals)
     
